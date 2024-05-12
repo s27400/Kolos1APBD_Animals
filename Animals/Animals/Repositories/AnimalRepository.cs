@@ -181,18 +181,20 @@ public class AnimalRepository : IAnimalRepository
         return Convert.ToInt32(res);
     }
 
-    public async Task AddProcedure(ProcedureDTO procedureDto, int AnimalId)
+    public async Task<int> AddProcedure(int procedureId, int animalId, DateTime date)
     {
-        await using var con = new SqlConnection(_configuration.GetConnectionString("Default"));
+        await using var con = new SqlConnection(_configuration["ConnectionStrings:Default"]);
         await con.OpenAsync();
+        
         await using var cmd = new SqlCommand();
         cmd.Connection = con;
-        cmd.CommandText = "INSERT INTO Procedure_Animal Values(@pID, @aID, @date)";
-        cmd.Parameters.AddWithValue("@pID", procedureDto.procedureId);
-        cmd.Parameters.AddWithValue("@aID", AnimalId);
-        cmd.Parameters.AddWithValue("@date", DateOnly.FromDateTime(procedureDto.date));
+        cmd.CommandText = "INSERT INTO PROCEDURE_ANIMAL(PROCEDURE_ID, ANIMAL_ID, DATE) VALUES (@procedureId, @animalId, @date)";
+        cmd.Parameters.AddWithValue("@procedureId", procedureId);
+        cmd.Parameters.AddWithValue("@animalId", animalId);
+        cmd.Parameters.AddWithValue("@date", date);
 
-        await cmd.ExecuteNonQueryAsync();
+        var affectedCount = await cmd.ExecuteNonQueryAsync();
+        return affectedCount;
     }
     
     

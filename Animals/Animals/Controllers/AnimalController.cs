@@ -50,7 +50,7 @@ public class AnimalController : ControllerBase
 
                 foreach (ProcedureDTO dto in Animal.procedures)
                 {
-                    _animalRepository.AddProcedure(dto, res);
+                   await _animalRepository.AddProcedure(dto.procedureId, res, dto.date);
                 }
 
                 scope.Complete();

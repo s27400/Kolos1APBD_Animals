@@ -15,6 +15,6 @@ public interface IAnimalRepository
     Task<bool> DoesProcedureExist(int id);
 
     Task<int> AddAnimal(DTOToAdd Animal);
-    Task AddProcedure(ProcedureDTO procedureDto, int AnimalId);
-    
+    public Task<int> AddProcedure(int procedureId, int animalId, DateTime date);
+
 }
